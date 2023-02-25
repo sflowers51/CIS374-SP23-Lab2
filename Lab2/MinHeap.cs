@@ -81,6 +81,7 @@ namespace Lab2
         public T ExtractMax()
         {
             // linear search
+            throw new NotImplementedException();
 
         }
 
@@ -152,7 +153,7 @@ namespace Lab2
         /// </summary>
         private static int Parent(int position)
         {
-
+            throw new NotImplementedException();
         }
 
         // TODO
@@ -161,6 +162,7 @@ namespace Lab2
         /// </summary>
         private static int LeftChild(int position)
         {
+            throw new NotImplementedException();
         }
 
         // TODO
@@ -169,6 +171,7 @@ namespace Lab2
         /// </summary>
         private static int RightChild(int position)
         {
+            throw new NotImplementedException();
         }
 
         private void Swap(int index1, int index2)
