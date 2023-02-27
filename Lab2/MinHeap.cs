@@ -33,7 +33,7 @@ namespace Lab2
 
         /// <summary>
         /// Returns the min item but does NOT remove it.
-        /// Time complexity: O(?).
+        /// Time complexity: O(?)
         /// </summary>
         public T Peek()
         {
@@ -48,7 +48,7 @@ namespace Lab2
         // TODO
         /// <summary>
         /// Adds given item to the heap.
-        /// Time complexity: O(?).
+        /// Time complexity: O(?)
         /// </summary>
         public void Add(T item)
         {
@@ -76,18 +76,20 @@ namespace Lab2
         // TODO
         /// <summary>
         /// Removes and returns the max item in the min-heap.
-        /// Time complexity: O( N ).
+        /// Time complexity: O( N )
         /// </summary>
         public T ExtractMax()
         {
             // linear search
+
+            // remove max
 
         }
 
         // TODO
         /// <summary>
         /// Removes and returns the min item in the min-heap.
-        /// Time ctexity: O( log(n) ).
+        /// Time complexity: O( log(n) )
         /// </summary>
         public T ExtractMin()
         {
@@ -113,7 +115,7 @@ namespace Lab2
         // TODO
         /// <summary>
         /// Returns true if the heap contains the given value; otherwise false.
-        /// Time complexity: O( N ).
+        /// Time complexity: O( N )
         /// </summary>
         public bool Contains(T value)
         {
@@ -128,6 +130,30 @@ namespace Lab2
             }
 
             return false;
+
+        }
+
+        // TODO
+        /// <summary>
+        /// Updates the first element with the given value from the heap.
+        /// Time complexity: O( ? )
+        /// </summary>
+        public void Update(T oldValue, T newValue)
+        {
+
+
+
+        }
+
+        // TODO
+        /// <summary>
+        /// Removes the first element with the given value from the heap.
+        /// Time complexity: O( ? )
+        /// </summary>
+        public void Remove(T value)
+        {
+
+
 
         }
 
