@@ -136,6 +136,23 @@ namespace Lab2
         // Time Complexity: O( log(n) )
         private void TrickleUp(int index)
         {
+            while(index > 0)
+            {
+                var parentIndex = (index - 1) / 2;
+
+                if (index <= parentIndex)
+                {
+                    return;
+                }
+                else
+                {
+                    var temp = array[index];
+                    array[index] = array[parentIndex];
+                    array[parentIndex] = temp;
+
+                    index = parentIndex;
+                }
+            }
 
 
         }
@@ -144,7 +161,19 @@ namespace Lab2
         // Time Complexity: O( log(n) )
         private void TrickleDown(int index)
         {
+            var childIndex = 2 * (index + 1);
+            var value = array[index];
 
+            while(childIndex < Count)
+            {
+                var maxValue = value;
+                var maxIndex = -1;
+                int i = 0;
+                while(i<2 && i + childIndex < Count)
+                {
+                    if (array[i+childIndex] > maxValue)
+                }
+            }
         }
 
         // TODO
