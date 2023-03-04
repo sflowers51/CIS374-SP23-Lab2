@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Linq;
+using System.Reflection;
+using System.Reflection.Metadata.Ecma335;
 
 namespace Lab2
 {
@@ -48,22 +50,26 @@ namespace Lab2
         // TODO
         /// <summary>
         /// Adds given item to the heap.
-        /// Time complexity: O(?).
+        /// Time complexity: O(N).
         /// </summary>
         public void Add(T item)
         {
+
+
             int nextEmptyIndex = Count;
 
             array[nextEmptyIndex] = item;
 
-            TrickleUp(nextEmptyIndex);
+            TrickleUp(nextEmptyIndex -1 );
 
             Count++;
+
 
             // resize if full
             if (Count == Capacity)
             {
                 DoubleArrayCapacity();
+
             }
 
         }
@@ -73,17 +79,6 @@ namespace Lab2
             return ExtractMin();
         }
 
-        // TODO
-        /// <summary>
-        /// Removes and returns the max item in the min-heap.
-        /// Time complexity: O( N ).
-        /// </summary>
-        public T ExtractMax()
-        {
-            // linear search
-            throw new NotImplementedException();
-
-        }
 
         // TODO
         /// <summary>
@@ -106,12 +101,16 @@ namespace Lab2
             Count--;
 
             // trickle down from root (first)
-            TrickleDown(0);
+            if(Count > 0)
+            {
+                TrickleUp(0);
+            }
+
 
             return min;
         }
 
-        // TODO
+        
         /// <summary>
         /// Returns true if the heap contains the given value; otherwise false.
         /// Time complexity: O( N ).
@@ -120,9 +119,9 @@ namespace Lab2
         {
             // linear search
 
-            foreach (var item in array)
+            for (int i = 0; i < Count; i++)
             {
-                if (item.CompareTo(value) == 0)
+                if (array[i].CompareTo(value) == 0)
                 {
                     return true;
                 }
@@ -132,75 +131,122 @@ namespace Lab2
 
         }
 
-        // TODO
+        
         // Time Complexity: O( log(n) )
         private void TrickleUp(int index)
         {
             while(index > 0)
             {
-                var parentIndex = (index - 1) / 2;
+                int parentIndex = Parent(index);
 
-                if (index <= parentIndex)
+                if (array[index].CompareTo(array[parentIndex]) < 0)
                 {
                     return;
                 }
-                else
-                {
-                    var temp = array[index];
-                    array[index] = array[parentIndex];
-                    array[parentIndex] = temp;
 
-                    index = parentIndex;
+                var temp = array[index];
+                array[index] = array[parentIndex];
+                array[parentIndex] = temp;
+
+                index = parentIndex;
+            }
+        }
+
+        
+        /// <summary>
+        /// Updates the first element with the given value from the heap.
+        /// Time complexity: O( ? )
+        /// </summary>
+        public void Update(T oldValue, T newValue)
+        {
+
+
+
+        }
+
+        
+        /// <summary>
+        /// Removes the first element with the given value from the heap.
+        /// Time complexity: O( ? )
+        /// </summary>
+        public void Remove(T value)
+        {
+            for (int i = 0; i < Count - 1; i++)
+            {
+                if (array[i].Equals(value))
+                {
+                    array[i] = array[Count - 1];
+                    Count--;
+                    TrickleDown(i);
+                    return;
                 }
             }
-
-
         }
 
         // TODO
         // Time Complexity: O( log(n) )
         private void TrickleDown(int index)
         {
-            var childIndex = 2 * (index + 1);
+            int childIndex = RightChild(index);
             var value = array[index];
 
             while(childIndex < Count)
             {
                 var maxValue = value;
-                var maxIndex = -1;
+                int maxIndex = -1;
                 int i = 0;
-                while(i<2 && i + childIndex < Count)
+                while(i < 2 && i + childIndex < Count)
                 {
-                    if (array[i+childIndex] > maxValue)
+                    if (array[i + childIndex].CompareTo(maxValue) < 0)
+                    {
+                        maxValue = array[i + childIndex];
+                        maxIndex = i + childIndex;
+                    }
+                    i++;
+                }
+
+                if ( maxValue.Equals(value))
+                {
+                    return;
+                }
+
+                else
+                {
+                    var temp = array[index];
+                    array[index] = array[maxIndex];
+                    array[maxIndex] = temp;
+
+                    index = maxIndex;
+                    childIndex = 2 * index + 1;
                 }
             }
         }
 
-        // TODO
+
         /// <summary>
         /// Gives the position of a node's parent, the node's position in the heap.
         /// </summary>
         private static int Parent(int position)
         {
-            throw new NotImplementedException();
+            return (((position - 1) / 2));
         }
 
-        // TODO
+        
         /// <summary>
         /// Returns the position of a node's left child, given the node's position.
         /// </summary>
         private static int LeftChild(int position)
         {
-            throw new NotImplementedException();
+            return ((2 * position) + 2);
         }
 
-        // TODO
+        
         /// <summary>
         /// Returns the position of a node's right child, given the node's position.
         /// </summary>
         private static int RightChild(int position)
         {
-            throw new NotImplementedException();
+            return ((2 * position) + 1);
         }
 
         private void Swap(int index1, int index2)
