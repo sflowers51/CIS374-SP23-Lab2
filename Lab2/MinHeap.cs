@@ -35,7 +35,7 @@ namespace Lab2
 
         /// <summary>
         /// Returns the min item but does NOT remove it.
-        /// Time complexity: O(?).
+        /// Time complexity: O(?)
         /// </summary>
         public T Peek()
         {
@@ -79,11 +79,24 @@ namespace Lab2
             return ExtractMin();
         }
 
+        // TODO
+        /// <summary>
+        /// Removes and returns the max item in the min-heap.
+        /// Time complexity: O( N )
+        /// </summary>
+        public T ExtractMax()
+        {
+            // linear search
+            throw new NotImplementedException();
+
+            // remove max
+
+        }
 
         // TODO
         /// <summary>
         /// Removes and returns the min item in the min-heap.
-        /// Time ctexity: O( log(n) ).
+        /// Time complexity: O( log(n) )
         /// </summary>
         public T ExtractMin()
         {
@@ -113,13 +126,13 @@ namespace Lab2
         
         /// <summary>
         /// Returns true if the heap contains the given value; otherwise false.
-        /// Time complexity: O( N ).
+        /// Time complexity: O( N )
         /// </summary>
         public bool Contains(T value)
         {
             // linear search
 
-            for (int i = 0; i < Count; i++)
+            for(int i=0; i < Count; i++)
             {
                 if (array[i].CompareTo(value) == 0)
                 {
