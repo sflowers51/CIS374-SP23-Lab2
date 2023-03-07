@@ -35,7 +35,7 @@ namespace Lab2
 
         /// <summary>
         /// Returns the min item but does NOT remove it.
-        /// Time complexity: O(?).
+        /// Time complexity: O(1).
         /// </summary>
         public T Peek()
         {
@@ -50,7 +50,7 @@ namespace Lab2
         // TODO
         /// <summary>
         /// Adds given item to the heap.
-        /// Time complexity: O(N).
+        /// Time complexity: O(log(n)).
         /// </summary>
         public void Add(T item)
         {
@@ -120,7 +120,7 @@ namespace Lab2
 
         /// <summary>
         /// Updates the first element with the given value from the heap.
-        /// Time complexity: O( ? )
+        /// Time complexity: O(log(n))
         /// </summary>
         public void Update(T oldValue, T newValue)
         {
@@ -162,7 +162,7 @@ namespace Lab2
 
         /// <summary>
         /// Removes the first element with the given value from the heap.
-        /// Time complexity: O( ? )
+        /// Time complexity: O(log(n))
         /// </summary>
         public void Remove(T value)
         {

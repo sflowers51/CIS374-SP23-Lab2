@@ -35,7 +35,7 @@ namespace Lab2
 
         /// <summary>
         /// Returns the min item but does NOT remove it.
-        /// Time complexity: O(?).
+        /// Time complexity: O(1).
         /// </summary>
         public T Peek()
         {
@@ -50,27 +50,23 @@ namespace Lab2
         // TODO
         /// <summary>
         /// Adds given item to the heap.
-        /// Time complexity: O(N).
+        /// Time complexity: O(log(n)).
         /// </summary>
         public void Add(T item)
         {
+            int nextEmptyIndex = Count;
+
+            array[nextEmptyIndex] = item;
+
+            TrickleUp(nextEmptyIndex - 1 );
+
+            Count++;
 
             // resize if full
             if (Count == Capacity)
             {
                 DoubleArrayCapacity();
             }
-
-            int nextEmptyIndex = Count;
-
-            array[nextEmptyIndex] = item;
-
-            TrickleUp(nextEmptyIndex);
-
-            Count++;
-
-
-
         }
 
         public T Extract()
@@ -123,7 +119,7 @@ namespace Lab2
 
         /// <summary>
         /// Updates the first element with the given value from the heap.
-        /// Time complexity: O( ? )
+        /// Time complexity: O(log(n))
         /// </summary>
         public void Update(T oldValue, T newValue)
         {
@@ -165,7 +161,7 @@ namespace Lab2
 
         /// <summary>
         /// Removes the first element with the given value from the heap.
-        /// Time complexity: O( ? )
+        /// Time complexity: O(logn(n))
         /// </summary>
         public void Remove(T value)
         {
@@ -202,6 +198,11 @@ namespace Lab2
         // Time Complexity: O( log(n) )
         private void TrickleUp(int index)
         {
+            if (index == 0)
+            {
+                return;
+            }
+
             while (index > 0)
             {
                 int parentIndex = Parent(index);
@@ -239,6 +240,11 @@ namespace Lab2
                     }
                     i++;
                 } 
+
+                if(maxValue.CompareTo(value) == 0)
+                {
+                    return;
+                }
                     
                 Swap(index, maxIndex);
 
@@ -248,6 +254,7 @@ namespace Lab2
                 childIndex = LeftChild(index);
                 
             }
+            
         }
 
 
