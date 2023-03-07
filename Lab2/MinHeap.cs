@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Drawing;
 using System.Linq;
 using System.Reflection;
 using System.Reflection.Metadata.Ecma335;
@@ -36,7 +35,7 @@ namespace Lab2
 
         /// <summary>
         /// Returns the min item but does NOT remove it.
-        /// Time complexity: O(?)
+        /// Time complexity: O(?).
         /// </summary>
         public T Peek()
         {
@@ -55,13 +54,6 @@ namespace Lab2
         /// </summary>
         public void Add(T item)
         {
-
-            // resize if full
-            if (Count == Capacity)
-            {
-                DoubleArrayCapacity();
-            }
-
             int nextEmptyIndex = Count;
 
             array[nextEmptyIndex] = item;
@@ -70,18 +62,18 @@ namespace Lab2
 
             Count++;
 
+            // resize if full
+            if (Count == Capacity)
+            {
+                DoubleArrayCapacity();
+            }
         }
 
         public T Extract()
         {
             return ExtractMin();
-        }    
+        }
 
-        // TODO
-        /// <summary>
-        /// Removes and returns the min item in the min-heap.
-        /// Time complexity: O( log(n) )
-        /// </summary>
         public T ExtractMin()
         {
             if (IsEmpty)
@@ -98,24 +90,22 @@ namespace Lab2
             Count--;
 
             // trickle down from root (first)
-            
             TrickleDown(0);
-           
-
 
             return min;
         }
 
-        
+
+
         /// <summary>
         /// Returns true if the heap contains the given value; otherwise false.
-        /// Time complexity: O( N )
+        /// Time complexity: O( N ).
         /// </summary>
         public bool Contains(T value)
         {
             // linear search
 
-            for(int i=0; i < Count; i++)
+            for (int i = 0; i < Count - 1; i++)
             {
                 if (array[i].CompareTo(value) == 0)
                 {
@@ -126,47 +116,46 @@ namespace Lab2
             return false;
 
         }
-        
+
         /// <summary>
         /// Updates the first element with the given value from the heap.
         /// Time complexity: O( ? )
         /// </summary>
         public void Update(T oldValue, T newValue)
         {
+
             if (IsEmpty)
             {
                 throw new Exception("Empty Heap");
             }
 
 
-            for (int i = 0; i < Count - 1; i++)
+
+            for (int i = 0; i < Count; i++)
             {
-                
-                if (array[i].Equals(oldValue))
+
+                if (array[i].CompareTo(oldValue) == 0)
                 {
+
                     array[i] = newValue;
 
-                    if(newValue.CompareTo(oldValue) == 0)
-                    {
-                        return;
-                    }
 
-                    if(newValue.CompareTo(oldValue) < 0)
+                    if (newValue.CompareTo(oldValue) > 0)
                     {
                         TrickleUp(i);
                         return;
                     }
 
-                    TrickleDown(i);
-                    return;
-
+                    else
+                    {
+                        TrickleDown(i);
+                        return;
+                    }
+                    
                 }
             }
-
-            throw new IndexOutOfRangeException();
         }
 
-        
         /// <summary>
         /// Removes the first element with the given value from the heap.
         /// Time complexity: O( ? )
@@ -182,12 +171,12 @@ namespace Lab2
             {
                 if (array[i].Equals(value))
                 {
-                    int index =  i;
+                    int index = i;
 
                     array[index] = array[Count - 1];
                     Count--;
 
-                    if(index == 0 || array[index].CompareTo(array[Parent(index)]) < 0)
+                    if (index == 0 || array[index].CompareTo(array[Parent(index)]) < 0)
                     {
                         TrickleDown(index);
                         return;
@@ -202,6 +191,7 @@ namespace Lab2
             throw new IndexOutOfRangeException();
         }
 
+
         // Time Complexity: O( log(n) )
         private void TrickleUp(int index)
         {
@@ -209,7 +199,7 @@ namespace Lab2
             {
                 int parentIndex = Parent(index);
 
-                if (array[index].CompareTo(array[parentIndex]) <= 0)
+                if (array[index].CompareTo(array[parentIndex]) >= 0)
                 {
                     return;
                 }
@@ -233,7 +223,7 @@ namespace Lab2
                 var minValue = value;
                 int minIndex = -1;
                 int i = 0;
-                while (i < 2 && i + childIndex < Count)
+                while(i < 2 && i + childIndex < Count)
                 {
                     if (array[i + childIndex].CompareTo(minValue) < 0)
                     {
@@ -242,19 +232,18 @@ namespace Lab2
                     }
                     i++;
                 }
-
                 if (minValue.CompareTo(value) == 0)
                 {
                     return;
                 }
 
-                else
-                {
-                    Swap(index, minIndex);
+                Swap(index, minIndex);
 
-                    index = minIndex;
-                    childIndex = LeftChild(index);
-                }
+
+                index = minIndex;
+
+                childIndex = LeftChild(index);
+
             }
         }
 
@@ -267,16 +256,16 @@ namespace Lab2
             return (((position - 1) / 2));
         }
 
-        
+
         /// <summary>
         /// Returns the position of a node's left child, given the node's position.
         /// </summary>
         private static int LeftChild(int position)
         {
-            return ((2 * position) + 2);
+            return ((2 * position) + 1);
         }
 
-        
+
         /// <summary>
         /// Returns the position of a node's right child, given the node's position.
         /// </summary>
@@ -301,5 +290,3 @@ namespace Lab2
 
     }
 }
-
-

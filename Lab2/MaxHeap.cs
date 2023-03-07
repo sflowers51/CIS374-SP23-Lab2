@@ -146,7 +146,7 @@ namespace Lab2
 
                     array[i] = newValue;
 
-                    if (newValue.CompareTo(oldValue) > 0)
+                    if (newValue.CompareTo(oldValue) < 0)
                     {
                         TrickleUp(i);
                         return;
@@ -156,16 +156,10 @@ namespace Lab2
                     {
                         TrickleDown(i);
                         return;
-                    }
-
-                    
+                    }                 
                 }
-
+                throw new IndexOutOfRangeException();
             }
-
-
-
-
         }
 
         /// <summary>
@@ -243,20 +237,15 @@ namespace Lab2
                         maxIndex = i + childIndex;
                     }
                     i++;
-                }
+                } 
+                    
+                Swap(index, maxIndex);
 
-                if (maxValue.CompareTo(value)==0)
-                {
-                    return;
-                }
-
-                else
-                {
-                    Swap(index, maxIndex);
-
-                    index = maxIndex;
-                    childIndex = RightChild(index);
-                }
+                
+                index = maxIndex;
+                
+                childIndex = RightChild(index);
+                
             }
         }
 
