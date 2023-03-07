@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Drawing;
 using System.Linq;
 using System.Reflection;
 using System.Reflection.Metadata.Ecma335;
@@ -56,13 +57,15 @@ namespace Lab2
         {
 
 
+
             int nextEmptyIndex = Count;
 
             array[nextEmptyIndex] = item;
 
-            TrickleUp(nextEmptyIndex -1 );
+            TrickleUp(nextEmptyIndex);
 
             Count++;
+
 
 
             // resize if full
@@ -77,21 +80,7 @@ namespace Lab2
         public T Extract()
         {
             return ExtractMin();
-        }
-
-        // TODO
-        /// <summary>
-        /// Removes and returns the max item in the min-heap.
-        /// Time complexity: O( N )
-        /// </summary>
-        public T ExtractMax()
-        {
-            // linear search
-            throw new NotImplementedException();
-
-            // remove max
-
-        }
+        }    
 
         // TODO
         /// <summary>
@@ -114,10 +103,9 @@ namespace Lab2
             Count--;
 
             // trickle down from root (first)
-            if(Count > 0)
-            {
-                TrickleUp(0);
-            }
+            
+            TrickleDown(0);
+           
 
 
             return min;
@@ -143,28 +131,6 @@ namespace Lab2
             return false;
 
         }
-
-        
-        // Time Complexity: O( log(n) )
-        private void TrickleUp(int index)
-        {
-            while(index > 0)
-            {
-                int parentIndex = Parent(index);
-
-                if (array[index].CompareTo(array[parentIndex]) < 0)
-                {
-                    return;
-                }
-
-                var temp = array[index];
-                array[index] = array[parentIndex];
-                array[parentIndex] = temp;
-
-                index = parentIndex;
-            }
-        }
-
         
         /// <summary>
         /// Updates the first element with the given value from the heap.
@@ -172,9 +138,37 @@ namespace Lab2
         /// </summary>
         public void Update(T oldValue, T newValue)
         {
+            if (IsEmpty)
+            {
+                throw new Exception("Empty Heap");
+            }
 
 
+            for (int i = 0; i < Count - 1; i++)
+            {
+                
+                if (array[i].Equals(oldValue))
+                {
+                    array[i] = newValue;
 
+                    if(newValue.CompareTo(oldValue) == 0)
+                    {
+                        return;
+                    }
+
+                    if(newValue.CompareTo(oldValue) < 0)
+                    {
+                        TrickleUp(i);
+                        return;
+                    }
+
+                    TrickleDown(i);
+                    return;
+
+                }
+            }
+
+            throw new IndexOutOfRangeException();
         }
 
         
@@ -184,15 +178,50 @@ namespace Lab2
         /// </summary>
         public void Remove(T value)
         {
-            for (int i = 0; i < Count - 1; i++)
+            if (IsEmpty)
+            {
+                throw new Exception("Empty Heap");
+            }
+
+            for (int i = 0; i < Count; i++)
             {
                 if (array[i].Equals(value))
                 {
-                    array[i] = array[Count - 1];
+                    int index =  i;
+
+                    array[index] = array[Count - 1];
                     Count--;
-                    TrickleDown(i);
+
+                    if(index == 0 || array[index].CompareTo(array[Parent(index)]) < 0)
+                    {
+                        TrickleDown(index);
+                        return;
+                    }
+
+                    TrickleUp(index);
+                    return;
+
+                }
+            }
+
+            throw new IndexOutOfRangeException();
+        }
+
+        // Time Complexity: O( log(n) )
+        private void TrickleUp(int index)
+        {
+            while (index > 0)
+            {
+                int parentIndex = Parent(index);
+
+                if (array[index].CompareTo(array[parentIndex]) < 0 || array[index].Equals(array[parentIndex]))
+                {
                     return;
                 }
+
+                Swap(index, parentIndex);
+
+                index = (parentIndex);
             }
         }
 
@@ -200,7 +229,8 @@ namespace Lab2
         // Time Complexity: O( log(n) )
         private void TrickleDown(int index)
         {
-            int childIndex = RightChild(index);
+
+            int childIndex = LeftChild(index);
             var value = array[index];
 
             while(childIndex < Count)
@@ -210,7 +240,7 @@ namespace Lab2
                 int i = 0;
                 while(i < 2 && i + childIndex < Count)
                 {
-                    if (array[i + childIndex].CompareTo(maxValue) < 0)
+                    if (array[i + childIndex].CompareTo(maxValue) > 0)
                     {
                         maxValue = array[i + childIndex];
                         maxIndex = i + childIndex;
@@ -225,12 +255,10 @@ namespace Lab2
 
                 else
                 {
-                    var temp = array[index];
-                    array[index] = array[maxIndex];
-                    array[maxIndex] = temp;
+                    Swap(index, maxIndex);
 
                     index = maxIndex;
-                    childIndex = 2 * index + 1;
+                    childIndex = LeftChild(index);
                 }
             }
         }

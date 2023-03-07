@@ -66,7 +66,7 @@ namespace UnitTests
             heap1.Add(2);
             heap1.Add(1);
             heap1.Add(0);
-            
+
             Assert.AreEqual(0, heap1.ExtractMin());
             Assert.AreEqual(1, heap1.ExtractMin());
             Assert.AreEqual(2, heap1.ExtractMin());

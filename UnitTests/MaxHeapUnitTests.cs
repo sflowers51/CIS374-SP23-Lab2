@@ -22,7 +22,7 @@ namespace UnitTests
             heap1.Add(3);
             heap1.Add(4);
             heap1.Add(5);
-            
+
             Assert.AreEqual(9, heap1.Peek());
         }
 
@@ -65,7 +65,7 @@ namespace UnitTests
             heap1.Add(2);
             heap1.Add(3);
             heap1.Add(4);
-            
+
             Assert.AreEqual(4, heap1.ExtractMax());
             Assert.AreEqual(3, heap1.ExtractMax());
             Assert.AreEqual(2, heap1.ExtractMax());
@@ -236,7 +236,7 @@ namespace UnitTests
             Assert.IsTrue(heap1.Contains(5000));
             Assert.IsTrue(heap1.Contains(150));
             heap1.ExtractMax();
-            Console.WriteLine( heap1.Peek() );
+            Console.WriteLine(heap1.Peek());
             Assert.IsFalse(heap1.Contains(5000));
 
         }
@@ -287,7 +287,7 @@ namespace UnitTests
             Assert.AreEqual(130, heap0.Peek());
             heap0.Add(160);
             Assert.AreEqual(160, heap0.Peek());
-            
+
         }
 
         [TestMethod]
@@ -316,7 +316,7 @@ namespace UnitTests
             heap0.Remove(130);
             Assert.AreEqual(1, heap0.Count);
             Assert.IsFalse(heap0.Contains(130));
-            
+
             heap0.Remove(90);
             Assert.AreEqual(0, heap0.Count);
             Assert.IsFalse(heap0.Contains(90));

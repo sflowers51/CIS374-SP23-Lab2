@@ -54,22 +54,18 @@ namespace Lab2
         /// </summary>
         public void Add(T item)
         {
-
-
             int nextEmptyIndex = Count;
 
             array[nextEmptyIndex] = item;
 
-            TrickleUp(nextEmptyIndex - 1);
+            TrickleUp(nextEmptyIndex);
 
             Count++;
-
 
             // resize if full
             if (Count == Capacity)
             {
                 DoubleArrayCapacity();
-
             }
 
         }
@@ -81,7 +77,23 @@ namespace Lab2
 
         public T ExtractMax()
         {
-            throw new NotImplementedException();
+            if (IsEmpty)
+            {
+                throw new Exception("Empty Heap");
+            }
+
+            T max = array[0];
+
+            // swap root (first) and last element
+            Swap(0, Count - 1);
+
+            // "remove" last
+            Count--;
+
+            // trickle down from root (first)
+            TrickleDown(0);
+
+            return max;
         }
 
 
@@ -94,7 +106,7 @@ namespace Lab2
         {
             // linear search
 
-            for (int i = 0; i < Count; i++)
+            for (int i = 0; i < Count -1; i++)
             {
                 if (array[i].CompareTo(value) == 0)
                 {
@@ -106,6 +118,83 @@ namespace Lab2
 
         }
 
+        /// <summary>
+        /// Updates the first element with the given value from the heap.
+        /// Time complexity: O( ? )
+        /// </summary>
+        public void Update(T oldValue, T newValue)
+        {
+
+            if (IsEmpty)
+            {
+                throw new Exception("Empty Heap");
+            }
+
+            if (newValue.CompareTo(oldValue) == 0)
+            {
+                return;
+            }
+
+            for (int i = 0; i < Count; i++)
+            {
+
+                if (array[i].CompareTo(oldValue) == 0)
+                {
+
+                    array[i] = newValue;
+
+                    if (newValue.CompareTo(oldValue) > 0)
+                    {
+                        TrickleUp(i);
+                        return;
+                    }
+
+                    TrickleDown(i);
+                    return;
+                }
+
+            }
+
+            throw new Exception();
+
+
+        }
+
+        /// <summary>
+        /// Removes the first element with the given value from the heap.
+        /// Time complexity: O( ? )
+        /// </summary>
+        public void Remove(T value)
+        {
+            if (IsEmpty)
+            {
+                throw new Exception("Empty Heap");
+            }
+
+            for (int i = 0; i < Count; i++)
+            {
+                if (array[i].Equals(value))
+                {
+                    int index = i;
+
+                    array[index] = array[Count - 1];
+                    Count--;
+
+                    if (index == 0 || array[index].CompareTo(array[Parent(index)]) < 0)
+                    {
+                        TrickleDown(index);
+                        return;
+                    }
+
+                    TrickleUp(index);
+                    return;
+
+                }
+            }
+
+            throw new IndexOutOfRangeException();
+        }
+
 
         // Time Complexity: O( log(n) )
         private void TrickleUp(int index)
@@ -114,47 +203,14 @@ namespace Lab2
             {
                 int parentIndex = Parent(index);
 
-                if (array[index].CompareTo(array[parentIndex]) < 0)
+                if (array[index].CompareTo(array[parentIndex]) <= 0 )
                 {
                     return;
                 }
 
-                var temp = array[index];
-                array[index] = array[parentIndex];
-                array[parentIndex] = temp;
+                Swap(index, parentIndex);
 
                 index = parentIndex;
-            }
-        }
-
-
-        /// <summary>
-        /// Updates the first element with the given value from the heap.
-        /// Time complexity: O( ? )
-        /// </summary>
-        public void Update(T oldValue, T newValue)
-        {
-
-
-
-        }
-
-
-        /// <summary>
-        /// Removes the first element with the given value from the heap.
-        /// Time complexity: O( ? )
-        /// </summary>
-        public void Remove(T value)
-        {
-            for (int i = 0; i < Count - 1; i++)
-            {
-                if (array[i].Equals(value))
-                {
-                    array[i] = array[Count - 1];
-                    Count--;
-                    TrickleDown(i);
-                    return;
-                }
             }
         }
 
@@ -162,7 +218,8 @@ namespace Lab2
         // Time Complexity: O( log(n) )
         private void TrickleDown(int index)
         {
-            int childIndex = RightChild(index);
+
+            int childIndex = LeftChild(index);
             var value = array[index];
 
             while (childIndex < Count)
@@ -172,7 +229,7 @@ namespace Lab2
                 int i = 0;
                 while (i < 2 && i + childIndex < Count)
                 {
-                    if (array[i + childIndex].CompareTo(maxValue) < 0)
+                    if (array[i + childIndex].CompareTo(maxValue) > 0)
                     {
                         maxValue = array[i + childIndex];
                         maxIndex = i + childIndex;
@@ -180,19 +237,17 @@ namespace Lab2
                     i++;
                 }
 
-                if (maxValue.Equals(value))
+                if (maxValue.CompareTo(value)==0)
                 {
                     return;
                 }
 
                 else
                 {
-                    var temp = array[index];
-                    array[index] = array[maxIndex];
-                    array[maxIndex] = temp;
+                    Swap(index, maxIndex);
 
                     index = maxIndex;
-                    childIndex = 2 * index + 1;
+                    childIndex = LeftChild(index);
                 }
             }
         }
