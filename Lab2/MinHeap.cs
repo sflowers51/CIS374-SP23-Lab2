@@ -54,6 +54,11 @@ namespace Lab2
         /// </summary>
         public void Add(T item)
         {
+            // resize if full
+            if (Count == Capacity)
+            {
+                DoubleArrayCapacity();
+            }
             int nextEmptyIndex = Count;
 
             array[nextEmptyIndex] = item;
@@ -62,11 +67,7 @@ namespace Lab2
 
             Count++;
 
-            // resize if full
-            if (Count == Capacity)
-            {
-                DoubleArrayCapacity();
-            }
+
         }
 
         public T Extract()
@@ -140,20 +141,23 @@ namespace Lab2
                     array[i] = newValue;
 
 
-                    if (newValue.CompareTo(oldValue) > 0)
+                    if (newValue.CompareTo(oldValue) < 0)
                     {
                         TrickleUp(i);
                         return;
                     }
 
-                    else
+                    else if (newValue.CompareTo(oldValue) > 0)
                     {
                         TrickleDown(i);
                         return;
                     }
                     
                 }
+
             }
+
+            throw new Exception();
         }
 
         /// <summary>
@@ -199,7 +203,7 @@ namespace Lab2
             {
                 int parentIndex = Parent(index);
 
-                if (array[index].CompareTo(array[parentIndex]) >= 0)
+                if (array[index].CompareTo(array[parentIndex]) > 0)
                 {
                     return;
                 }
@@ -253,7 +257,7 @@ namespace Lab2
         /// </summary>
         private static int Parent(int position)
         {
-            return (((position - 1) / 2));
+            return (position - 1) / 2;
         }
 
 
@@ -262,7 +266,7 @@ namespace Lab2
         /// </summary>
         private static int LeftChild(int position)
         {
-            return ((2 * position) + 1);
+            return 2 * position + 1;
         }
 
 
@@ -271,7 +275,7 @@ namespace Lab2
         /// </summary>
         private static int RightChild(int position)
         {
-            return ((2 * position) + 1);
+            return 2 * position + 2;
         }
 
         private void Swap(int index1, int index2)

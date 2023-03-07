@@ -133,10 +133,7 @@ namespace Lab2
                 throw new Exception("Empty Heap");
             }
 
-            if (newValue.CompareTo(oldValue) == 0)
-            {
-                return;
-            }
+
 
             for (int i = 0; i < Count; i++)
             {
@@ -146,20 +143,24 @@ namespace Lab2
 
                     array[i] = newValue;
 
+
                     if (newValue.CompareTo(oldValue) < 0)
                     {
                         TrickleUp(i);
                         return;
                     }
 
-                    else
+                    else if (newValue.CompareTo(oldValue) > 0)
                     {
                         TrickleDown(i);
                         return;
-                    }                 
+                    }
+
                 }
-                throw new IndexOutOfRangeException();
+
             }
+
+            throw new Exception();
         }
 
         /// <summary>
@@ -221,7 +222,7 @@ namespace Lab2
         private void TrickleDown(int index)
         {
 
-            int childIndex = RightChild(index);
+            int childIndex = LeftChild(index);
             var value = array[index];
 
             while (childIndex < Count)
@@ -244,7 +245,7 @@ namespace Lab2
                 
                 index = maxIndex;
                 
-                childIndex = RightChild(index);
+                childIndex = LeftChild(index);
                 
             }
         }
@@ -255,7 +256,7 @@ namespace Lab2
         /// </summary>
         private static int Parent(int position)
         {
-            return (((position - 1) / 2));
+            return (position - 1) / 2;
         }
 
 
@@ -264,7 +265,7 @@ namespace Lab2
         /// </summary>
         private static int LeftChild(int position)
         {
-            return ((2 * position) + 2);
+            return 2 * position + 1;
         }
 
 
@@ -273,7 +274,7 @@ namespace Lab2
         /// </summary>
         private static int RightChild(int position)
         {
-            return ((2 * position) + 1);
+            return 2 * position + 2;
         }
 
         private void Swap(int index1, int index2)
