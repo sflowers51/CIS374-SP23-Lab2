@@ -56,7 +56,11 @@ namespace Lab2
         public void Add(T item)
         {
 
-
+            // resize if full
+            if (Count == Capacity)
+            {
+                DoubleArrayCapacity();
+            }
 
             int nextEmptyIndex = Count;
 
@@ -65,15 +69,6 @@ namespace Lab2
             TrickleUp(nextEmptyIndex);
 
             Count++;
-
-
-
-            // resize if full
-            if (Count == Capacity)
-            {
-                DoubleArrayCapacity();
-
-            }
 
         }
 
@@ -214,14 +209,14 @@ namespace Lab2
             {
                 int parentIndex = Parent(index);
 
-                if (array[index].CompareTo(array[parentIndex]) < 0 || array[index].Equals(array[parentIndex]))
+                if (array[index].CompareTo(array[parentIndex]) <= 0)
                 {
                     return;
                 }
 
                 Swap(index, parentIndex);
 
-                index = (parentIndex);
+                index = parentIndex;
             }
         }
 
@@ -233,31 +228,31 @@ namespace Lab2
             int childIndex = LeftChild(index);
             var value = array[index];
 
-            while(childIndex < Count)
+            while (childIndex < Count)
             {
-                var maxValue = value;
-                int maxIndex = -1;
+                var minValue = value;
+                int minIndex = -1;
                 int i = 0;
-                while(i < 2 && i + childIndex < Count)
+                while (i < 2 && i + childIndex < Count)
                 {
-                    if (array[i + childIndex].CompareTo(maxValue) > 0)
+                    if (array[i + childIndex].CompareTo(minValue) < 0)
                     {
-                        maxValue = array[i + childIndex];
-                        maxIndex = i + childIndex;
+                        minValue = array[i + childIndex];
+                        minIndex = i + childIndex;
                     }
                     i++;
                 }
 
-                if ( maxValue.Equals(value))
+                if (minValue.CompareTo(value) == 0)
                 {
                     return;
                 }
 
                 else
                 {
-                    Swap(index, maxIndex);
+                    Swap(index, minIndex);
 
-                    index = maxIndex;
+                    index = minIndex;
                     childIndex = LeftChild(index);
                 }
             }

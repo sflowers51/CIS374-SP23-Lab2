@@ -54,6 +54,13 @@ namespace Lab2
         /// </summary>
         public void Add(T item)
         {
+
+            // resize if full
+            if (Count == Capacity)
+            {
+                DoubleArrayCapacity();
+            }
+
             int nextEmptyIndex = Count;
 
             array[nextEmptyIndex] = item;
@@ -62,11 +69,7 @@ namespace Lab2
 
             Count++;
 
-            // resize if full
-            if (Count == Capacity)
-            {
-                DoubleArrayCapacity();
-            }
+
 
         }
 
@@ -149,13 +152,18 @@ namespace Lab2
                         return;
                     }
 
-                    TrickleDown(i);
-                    return;
+                    else
+                    {
+                        TrickleDown(i);
+                        return;
+                    }
+
+                    
                 }
 
             }
 
-            throw new Exception();
+
 
 
         }
@@ -219,7 +227,7 @@ namespace Lab2
         private void TrickleDown(int index)
         {
 
-            int childIndex = LeftChild(index);
+            int childIndex = RightChild(index);
             var value = array[index];
 
             while (childIndex < Count)
@@ -247,7 +255,7 @@ namespace Lab2
                     Swap(index, maxIndex);
 
                     index = maxIndex;
-                    childIndex = LeftChild(index);
+                    childIndex = RightChild(index);
                 }
             }
         }
