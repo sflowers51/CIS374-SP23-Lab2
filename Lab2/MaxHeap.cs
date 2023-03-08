@@ -34,7 +34,7 @@ namespace Lab2
         }
 
         /// <summary>
-        /// Returns the min item but does NOT remove it.
+        /// Returns the max item but does NOT remove it.
         /// Time complexity: O(1).
         /// </summary>
         public T Peek()
@@ -58,7 +58,7 @@ namespace Lab2
 
             array[nextEmptyIndex] = item;
 
-            TrickleUp(nextEmptyIndex - 1 );
+            TrickleUp(nextEmptyIndex);
 
             Count++;
 
@@ -105,7 +105,7 @@ namespace Lab2
         {
             // linear search
 
-            for (int i = 0; i < Count -1; i++)
+            for (int i = 0; i < Count; i++)
             {
                 if (array[i].CompareTo(value) == 0)
                 {
@@ -161,7 +161,7 @@ namespace Lab2
 
         /// <summary>
         /// Removes the first element with the given value from the heap.
-        /// Time complexity: O(logn(n))
+        /// Time complexity: O(log(n))
         /// </summary>
         public void Remove(T value)
         {
